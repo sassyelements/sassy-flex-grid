@@ -13,12 +13,7 @@ module.exports = {
                 test: /.(scss|css)$/,
                 exclude: /node_modules/,
                 use: [
-                    {
-                        loader: MiniCssExtractPlugin.loader,
-                        options: {
-                            reloadAll: true
-                        }
-                    },
+                    MiniCssExtractPlugin.loader,
                     'css-loader',
                     'postcss-loader',
                     'sass-loader',
