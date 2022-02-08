@@ -59,3 +59,6 @@ wpcs/
 composer.lock
 package-lock.json
 dist/mix-manifest.json
+dist/main.css.map
+dist/main.js
+dist/main.js.map
