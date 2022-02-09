@@ -55,7 +55,7 @@ $container-max-widths: (
     @if ($breakpoint == 0) {
         @content;
     } @else {
-        @media (min-width: $breakpoint) {
+        @media only screen and (max-width: $breakpoint) {
             @content;
         }
     }
