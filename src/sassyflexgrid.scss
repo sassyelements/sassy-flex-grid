@@ -1,0 +1,90 @@
+$grid__bp-xs: 0;
+$grid__bp-sm: 576px;
+$grid__bp-md: 768px;
+$grid__bp-lg: 992px;
+$grid__bp-xl: 1200px;
+$grid__bp-xxl: 1400px;
+
+$big-page-width: $grid__bp-xl;
+$max-page-width: $grid__bp-xxl;
+$grid-columns: 12;
+$grid-gutter: 1.5em;
+$contained: 80%; // Limits width of contained content
+
+.container {
+    max-width: $big-page-width;
+    margin: 0 auto;
+}
+
+.container-fluid {
+    max-width: 100%;
+}
+
+.contained {
+    max-width: $contained;
+    margin: 0 auto;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+$map-grid-props: (
+    '': 0,
+    '-xxl': $grid__bp-xxl,
+    '-xl': $grid__bp-xl,
+    '-lg': $grid__bp-lg,
+    '-md': $grid__bp-md,
+    '-sm': $grid__bp-sm
+);
+
+// Max-widths for breakpoints
+$container-max-widths: (
+    '-xxl': 1320px,
+    '-xl': 1140px,
+    '-lg': 960px,
+    '-md': 720px,
+    '-sm': 540px
+);
+
+// Build the grid
+// Mixin for creating dynamic media queries
+@mixin create-media-queries($breakpoint) {
+    @if ($breakpoint == 0) {
+        @content;
+    } @else {
+        @media (min-width: $breakpoint) {
+            @content;
+        }
+    }
+}
+
+@mixin create-col-classes($modifier, $grid-columns, $breakpoint) {
+    @include create-media-queries($breakpoint) {
+        .container#{$modifier}, .container {
+            // Gets the right max-width for the right breakpoint
+            max-width: map-get($container-max-widths, $modifier);
+        }
+
+        // Create Columns
+        @for $i from 1 through $grid-columns {
+            .col#{$modifier}-#{$i} {
+                flex-basis: calc(100 / ($grid-columns / $i)) * 1%;
+            }
+        }
+
+        // Create Offsets
+        @for $i from 1 through $grid-columns {
+            .col#{$modifier}-offset-#{$i} {
+                margin-left: calc(100 / ($grid-columns / $i)) * 1%;
+            }
+        }
+    }
+}
+
+// Loops through breakpoints and creates all necessary classes for the right breakpoint
+@each $modifier, $breakpoint in $map-grid-props {
+    @include create-col-classes($modifier, $grid-columns, $breakpoint);
+}

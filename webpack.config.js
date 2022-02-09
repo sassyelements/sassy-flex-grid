@@ -1,5 +1,6 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 
 module.exports = {
     mode: 'development',
@@ -22,9 +23,28 @@ module.exports = {
         ]
     },
 
+    optimization: {
+        minimizer: [
+            new CssMinimizerPlugin({
+                minimizerOptions: {
+                    preset: [
+                        "default",
+                        {
+                            discardComments: {
+                                removeAll: true
+                            }
+                        }
+                    ]
+                }
+            })
+        ],
+        // If you want to minimize CSS in development mode then set minimize to true otherwise minimization will happen in production only
+        // minimize: true
+    },
+
     plugins: [
         new MiniCssExtractPlugin({
-            filename: '[name].css'
+            filename: 'sassyflexgrid.css'
         })
     ]
 }
